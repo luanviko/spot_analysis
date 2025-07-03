@@ -4,7 +4,7 @@ This repository contains a simple sqlite3 data base in Python, and required pyth
 
 Its purpose is to be a database and analysis toolset for the photos taken with the [camera_control](https://github.com/luanviko/camera_control) repository.
 
-[Photos retrieved from SQL database and analyzed with Python](spot.png)
+![Photos retrieved from SQL database and analyzed with Python](spot.png)
 
 ## Repository Structure
 
