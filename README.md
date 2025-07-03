@@ -38,6 +38,16 @@ The image was retrieved from the SQL database then analyzed with Python. [Please
 * ```.release_jasper.py```: An example app on how to start Jasper and fetch photos; still under construction.
 
 
+## Database
+
+The SQL database is built around taking photos and adding their metadata to it.
+
+![Database image](database.svg)
+
+You can manually add a photo to the database by importing its json file. The ```Database``` class can decode the json file and add a new photo the ```photos``` table as illustrated in the ```Database:add_photo()``` method [through this link.](https://github.com/luanviko/spot_analysis/blob/18267f86b3036f681b8b2bb0d5f3b212554bb4cc/utils/db_tools.py#L129)
+
+
+
 ## Generative AI Disclaimer
 
 This work uses chatGPT and deepseek to organize and refactor code, add docstrings, and anotate variable types and returns (the boring stuff). Humans have developed the algorithms and plots (the cool stuff, of course).
