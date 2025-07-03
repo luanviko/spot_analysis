@@ -26,12 +26,6 @@ def main():
 
     rows = db.fetch_table('runs')
     print(rows)
-    
-
-    # TODO: - Find all data_paths from all runs. Look for photos from all runs' paths.
-    # TODO: - Find a photo's path and analyze it.
-
-
 
 if __name__ == '__main__':
     main()
