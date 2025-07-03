@@ -4,7 +4,7 @@ This repository contains a simple sqlite3 data base in Python, and required pyth
 
 Its purpose is to be a database and analysis toolset for the photos taken with the [camera_control](https://github.com/luanviko/camera_control) repository.
 
-The image was retrieved from the SQL database then analyzed with Python.
+The image was retrieved from the SQL database then analyzed with Python. [Please check out the animation!](spot_animation.mp4)
 
 ![Photos retrieved from SQL database and analyzed with Python](spot.png)
 
@@ -38,19 +38,9 @@ The image was retrieved from the SQL database then analyzed with Python.
 * ```.release_jasper.py```: An example app on how to start Jasper and fetch photos; still under construction.
 
 
-## Offline Analysis
-
-Contains several functions to find the contours of the photos taken with the ```camera_control``` app. In this case, finds the contour of a light spot on a wall. It can be used to generate the frames in the video below.
-
-<!-- ![Contour-level animation](spot_animation.mp4) -->
-
-<video width="600" controls>
-  <source src="spot_animation.mp4" type="video/mp4">
-</video>
-
 ## Generative AI Disclaimer
 
-This work uses chatGPT and deepseek to organize and refactor code, add docstrings, and anotate types (all the boring stuff). The algorithms and plots (the cool stuff) are developed by humans.
+This work uses chatGPT and deepseek to organize and refactor code, add docstrings, and anotate variable types and returns (the boring stuff). Humans have developed the algorithms and plots (the cool stuff, of course).
 
 
 ## Acknowledgements 
