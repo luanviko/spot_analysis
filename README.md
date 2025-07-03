@@ -4,6 +4,8 @@ This repository contains a simple sqlite3 data base in Python, and required pyth
 
 Its purpose is to be a database and analysis toolset for the photos taken with the [camera_control](https://github.com/luanviko/camera_control) repository.
 
+The image was retrieved from the SQL database then analyzed with Python.
+
 ![Photos retrieved from SQL database and analyzed with Python](spot.png)
 
 ## Repository Structure
@@ -39,6 +41,8 @@ Its purpose is to be a database and analysis toolset for the photos taken with t
 ## Offline Analysis
 
 Contains several functions to find the contours of the photos taken with the ```camera_control``` app. In this case, finds the contour of a light spot on a wall. It can be used to generate the frames in the video below.
+
+![Contour-level animation](spot_animation.mp4)
 
 ## Generative AI Disclaimer
 
