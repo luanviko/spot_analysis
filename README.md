@@ -42,7 +42,11 @@ The image was retrieved from the SQL database then analyzed with Python.
 
 Contains several functions to find the contours of the photos taken with the ```camera_control``` app. In this case, finds the contour of a light spot on a wall. It can be used to generate the frames in the video below.
 
-![Contour-level animation](spot_animation.mp4)
+<!-- ![Contour-level animation](spot_animation.mp4) -->
+
+<video width="600" controls>
+  <source src="spot_animation.mp4" type="video/mp4">
+</video>
 
 ## Generative AI Disclaimer
 
