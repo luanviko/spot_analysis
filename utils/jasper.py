@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Any, Optional, Union, Tuple
 from pathlib import Path
-import sqlite3, json, os
+import sqlite3, json, os, sys
 from db_manager import Database
 
 
@@ -38,16 +38,16 @@ class Jasper(Database):
         """
         self.present_jsons = set()
 
-        query = 'SELECT photo_path FROM photos'
+        query = 'SELECT photo_directory, photo_arw FROM photos'
         results = self.cursor(query, fetch='all')
 
         self.present_jsons = {
-            str(Path(json.loads(row[0])[0]).with_suffix('.json')) 
+            str( Path(row[0]) / Path(row[1]).with_suffix('.json') )
             for row in results
         }
 
         incoming_jsons = {
-            file
+            path / "photos" / file
             for path in self.incoming_folders
             for file in (path / "photos").glob("*.json")
             if str(file) not in self.present_jsons
@@ -70,3 +70,8 @@ class Jasper(Database):
                 self.add_photo(str(json_path))
             elif 'run_info' in str(json_path.parent):
                 self.add_run(str(json_path))
+
+    
+    def go_inside(self, sig, frame):
+        print("\nJasper stopped fetching.")
+        sys.exit(0)

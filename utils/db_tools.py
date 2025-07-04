@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 from pathlib import Path
 import sqlite3, json
+from time import sleep
 
 @dataclass
 class Database:
@@ -63,18 +64,20 @@ class Database:
         """
         self.cursor('''
             CREATE TABLE IF NOT EXISTS photos (
-                run_number     INTEGER,
-                led_serial     INTEGER,
-                date           TEXT,
-                photo_path     TEXT PRIMARY KEY,              
-                channel        INTEGER,           
-                distance       REAL,              
-                voltage        REAL,              
-                iso            INTEGER,
-                shutterspeed   REAL,
-                best_x0        REAL,
-                best_y0        REAL,
-                best_R         REAL
+                run_number       INTEGER,
+                led_serial       INTEGER,
+                date             TEXT,
+                photo_directory, TEXT,
+                photo_arw        TEXT PRIMARY KEY,              
+                photo_jpg        TEXT,
+                channel          INTEGER,           
+                distance         REAL,              
+                voltage          REAL,              
+                iso              INTEGER,
+                shutterspeed     REAL,
+                best_x0          REAL,
+                best_y0          REAL,
+                best_R           REAL
             );
         ''')
 
@@ -105,6 +108,23 @@ class Database:
         if table_name in self.allowed_tables:
             return self.cursor(f"SELECT * FROM {table_name}", fetch='all')
         return None
+    
+    def load_json(self, json_path: str | Path, time:int = 5, attempts:int = 2):
+
+        retry_number = 0
+        while retry_number < attempts:
+            
+            try:
+                with open(json_path, "r") as input_file:
+                    data = json.load(input_file)
+                return data
+
+            except: 
+                print(f"Unable to open json file. Waiting {time} seconds to try again.")
+                retry_number += 1
+                sleep(time)
+
+        return None                
 
     def add_photo(self, photo_json: str | Path) -> list[tuple] | None:
         """
@@ -117,20 +137,32 @@ class Database:
             list[tuple] | None: Result of the insert operation.
         """
         photo_json = Path(photo_json)
+        data = self.load_json(photo_json)
+        
+        if data == None:
+            Warning(f"Unable to load {photo_json} to database. I will try again later.")
+            return
+
         if photo_json.stat().st_size == 0:
-            raise ValueError(f"File is empty: {photo_json}")
+            Warning(f"Unable to load {photo_json} to database. File is empty.")
+            return
 
         with photo_json.open("r") as file_input:
             data = json.load(file_input)
 
-        photo_path_str = json.dumps(data["photo_path"])
+        photo_path = data["photo_path"]
+        photo_directory = str(Path(photo_path[0]).parent)
+        photo_arw  = str(Path(photo_path[0]).name)
+        photo_jpg  = str(Path(photo_path[1]).name)
 
         statement = """
             INSERT OR IGNORE INTO photos (
                 run_number,
                 led_serial,
                 date,
-                photo_path,
+                photo_directory,
+                photo_arw,
+                photo_jpg,
                 channel,
                 distance,
                 voltage,
@@ -139,14 +171,16 @@ class Database:
                 best_x0,
                 best_y0,
                 best_R
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """
 
         values: list[Any] = [
             data["run_number"],
             data["led_serial"],
             data["date"],
-            photo_path_str,
+            photo_directory,
+            photo_arw,
+            photo_jpg,
             data.get("channel"),
             data.get("distance"),
             data.get("voltage"),
